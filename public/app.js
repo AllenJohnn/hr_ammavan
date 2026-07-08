@@ -10,7 +10,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const resultPanel = document.getElementById('result-panel');
   
   const systemStatus = document.getElementById('system-status-val');
-  const chaiStatus = document.getElementById('chai-status-val');
   
   const progressFill = document.getElementById('progress-fill');
   const tickerText = document.getElementById('ticker-text');
@@ -41,10 +40,12 @@ document.addEventListener('DOMContentLoaded', () => {
   const activeTabCritique = document.getElementById('active-tab-critique');
   
   const btnReupload = document.getElementById('btn-reupload');
+  const btnSoundToggle = document.getElementById('btn-sound-toggle');
   
   // State
   let loadingInterval = null;
   let activeRoastData = null;
+  let isMuted = false;
 
   // 1. Mouse Parallax Palm Fronds
   window.addEventListener('mousemove', (e) => {
@@ -57,8 +58,18 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
+  // Sound Toggle Switch Listener (v4.6)
+  if (btnSoundToggle) {
+    btnSoundToggle.addEventListener('click', () => {
+      isMuted = !isMuted;
+      btnSoundToggle.textContent = isMuted ? "🔇 OFF" : "🔊 ON";
+      btnSoundToggle.className = isMuted ? "status-value text-secondary" : "status-value text-gold";
+    });
+  }
+
   // Sound Synthesis Helpers (Web Audio API)
   function playSlamSound() {
+    if (isMuted) return;
     try {
       const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
       
@@ -107,6 +118,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Sound buzz helper
   function playBuzzerSound() {
+    if (isMuted) return;
     try {
       const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
       const osc1 = audioCtx.createOscillator();
@@ -137,6 +149,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Sound click helper
   function playClickSound() {
+    if (isMuted) return;
     try {
       const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
       const osc = audioCtx.createOscillator();
@@ -216,7 +229,6 @@ document.addEventListener('DOMContentLoaded', () => {
     
     systemStatus.textContent = "തള്ളിമറിച്ച പേപ്പർ ഇരന്നു വാങ്ങുന്നു...";
     systemStatus.className = "status-value text-gold";
-    chaiStatus.textContent = "തീ കൂട്ടുന്നു...";
     
     loadingRateVal.textContent = "processing...";
     loadingRateVal.style.color = 'var(--chalk-yellow)';
@@ -296,7 +308,6 @@ document.addEventListener('DOMContentLoaded', () => {
       
       systemStatus.textContent = "ചായ കുടി കഴിഞ്ഞു വെറ്റില മുറുക്കുന്നു...";
       systemStatus.className = "status-value pulse-green";
-      chaiStatus.textContent = "കട്ടൻ ചായ റെഡിയാണ്!";
       
       showErrorAlert(err.message || "എന്തോ കുഴപ്പം സംഭവിച്ചു! അമ്മാവന് വണ്ടിക്കൂലി കിട്ടിയിട്ടില്ല എന്ന് തോന്നുന്നു.");
     });
@@ -357,7 +368,6 @@ document.addEventListener('DOMContentLoaded', () => {
     
     systemStatus.textContent = "റസ്യൂമെ കീറി പപ്പടമാക്കിയിട്ടുണ്ട്!";
     systemStatus.className = "status-value text-gold";
-    chaiStatus.textContent = "ചായ കുടിച്ചു കൊള്ളുക.";
 
     const score = data.overall_savage_score;
     
@@ -456,7 +466,6 @@ document.addEventListener('DOMContentLoaded', () => {
     
     systemStatus.textContent = "ചായ കുടി കഴിഞ്ഞു വെറ്റില മുറുക്കുന്നു...";
     systemStatus.className = "status-value pulse-green";
-    chaiStatus.textContent = "കട്ടൻ ചായ റെഡിയാണ്!";
   });
 
   // Ticker Stages
