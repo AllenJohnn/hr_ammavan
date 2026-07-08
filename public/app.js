@@ -382,10 +382,24 @@ document.addEventListener('DOMContentLoaded', () => {
       fallbackWarningBox.classList.add('hidden');
     }
 
+    // Reset certified stamp state before typing starts
+    const stamp = document.getElementById('certified-fluff-stamp');
+    if (stamp) {
+      stamp.classList.add('hidden');
+      stamp.classList.remove('slammed');
+    }
+
     // 2. Render Opening Roast, Final Verdict, Rehab tips, and Motivational Pep Talk (Typewritten sequentially)
     typeWriteText(openingRoastText, formatMarkdown(data.opening_roast), () => {
       typeWriteText(finalVerdictText, formatMarkdown(data.final_verdict), () => {
-        typeWriteText(motivationalCloseText, formatMarkdown(data.motivational_close));
+        typeWriteText(motivationalCloseText, formatMarkdown(data.motivational_close), () => {
+          // Slam the 'Certified Fluff' stamp after final close is printed!
+          if (stamp) {
+            stamp.classList.remove('hidden');
+            stamp.classList.add('slammed');
+            playSlamSound();
+          }
+        });
       });
     });
 
@@ -459,6 +473,12 @@ document.addEventListener('DOMContentLoaded', () => {
     if (finalVerdictText.typeTimeoutId) clearTimeout(finalVerdictText.typeTimeoutId);
     if (motivationalCloseText.typeTimeoutId) clearTimeout(motivationalCloseText.typeTimeoutId);
     if (activeTabCritique.typeTimeoutId) clearTimeout(activeTabCritique.typeTimeoutId);
+    
+    const stamp = document.getElementById('certified-fluff-stamp');
+    if (stamp) {
+      stamp.classList.add('hidden');
+      stamp.classList.remove('slammed');
+    }
     
     resultPanel.classList.add('hidden');
     uploadPanel.classList.remove('hidden');
