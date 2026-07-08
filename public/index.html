@@ -108,12 +108,12 @@
         <div class="roof-rust-edge"></div>
       </div>
 
-      <!-- Hanging electrical bulb -->
+      <!-- Hanging electrical bulb (Flickering voltage ambient helper v4.9.3) -->
       <div class="hanging-bulb" id="header-bulb">
         <svg viewBox="0 0 100 150" width="30" height="45">
           <line x1="50" y1="0" x2="50" y2="40" stroke="#22130c" stroke-width="4"/>
           <rect x="40" y="40" width="20" height="15" fill="#555" rx="1"/>
-          <circle cx="50" cy="85" r="28" fill="#ffd54f" class="bulb-glass-glow"/>
+          <circle cx="50" cy="85" r="28" fill="#ffd54f" class="bulb-glass-glow flickering-bulb"/>
         </svg>
       </div>
       
@@ -219,26 +219,38 @@
 
     <!-- Main Console Panel -->
     <main class="main-console">
-      <!-- Upload File Panel -->
+      <!-- Upload File Panel (Spindle Spike Redesign v4.9.3) -->
       <section id="upload-panel" class="wood-panel rotate-left-sm">
-        <div class="paper-card tea-box-container">
+        <div class="paper-card tea-box-container" style="position: relative;">
+          <!-- Curled paper tapes for decoration -->
+          <div class="tape-strip"></div>
+          <div class="page-crease"></div>
+
           <div class="ledger-header">
             <span class="ledger-title">RESUME ENTRY BOOK</span>
             <span class="ledger-ref">REF-NO: 2026/CHAYAKKADA</span>
           </div>
           
-          <div class="dropzone-area" id="dropzone">
-            <div class="dropzone-content">
-              <div class="tea-sack-visual">
-                <svg viewBox="0 0 100 120" width="90" height="110" class="sack-svg">
-                  <path d="M 20 40 C 20 20, 80 20, 80 40 C 85 80, 75 110, 50 115 C 25 110, 15 80, 20 40 Z" fill="#8d6e63" stroke="#5d4037" stroke-width="4"/>
-                  <path d="M 30 35 L 70 35 M 32 30 L 68 30" stroke="#5d4037" stroke-width="3" stroke-linecap="round"/>
-                  <text x="50" y="75" font-family="'Special Elite', monospace" font-size="20" font-weight="bold" fill="#3e2723" text-anchor="middle">TEA</text>
-                  <path d="M 50 82 Q 60 77 55 92 Q 40 97 50 82" fill="#4a6741"/>
-                </svg>
+          <!-- Desk Paper Spindle dropzone container -->
+          <div class="dropzone-area" id="dropzone" style="position: relative; overflow: hidden; background-color: rgba(0,0,0,0.12);">
+            <div class="dropzone-content" style="position: relative; z-index: 10;">
+              <!-- Metallic Spindle Desk Spike Asset -->
+              <div class="spindle-container" style="position: relative; height: 140px; display: flex; justify-content: center; align-items: flex-end; margin-bottom: 12px;">
+                <div class="spindle-base" style="width: 80px; height: 10px; background-color: var(--wood-base); border: 2px solid var(--brass-gold); border-radius: 5px; position: absolute; bottom: 0;"></div>
+                <div class="spindle-spike" style="width: 4px; height: 110px; background-color: var(--brass-gold); border-radius: 2px; position: absolute; bottom: 10px; z-index: 10;"></div>
+                <!-- Suspended PDF paper page -->
+                <div class="spindle-paper" id="spindle-paper" style="position: absolute; bottom: 35px; z-index: 15; transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);">
+                  <svg viewBox="0 0 50 60" width="45" height="54">
+                    <path d="M5 5h26l14 14v36H5z" fill="var(--paper-cream)" stroke="#5d4037" stroke-width="2.5"></path>
+                    <path d="M31 5v14h14" stroke="#5d4037" stroke-width="2"></path>
+                    <text x="23" y="42" font-size="11" font-weight="bold" fill="var(--signboard-red)" text-anchor="middle" font-family="monospace">PDF</text>
+                  </svg>
+                </div>
+                <!-- Tattered paper tear visual -->
+                <div class="spindle-tear hidden" id="spindle-tear" style="position: absolute; bottom: 30px; z-index: 16; width: 14px; height: 14px; background-color: var(--signboard-red); border-radius: 50%; opacity: 0.85; filter: blur(1.5px);"></div>
               </div>
-              <p class="dropzone-text-primary">നിന്റെ തള്ളിമറിച്ച റെസ്യൂമെ ഈ ചായപ്പെട്ടിയിലേക്ക് തള്ളുക!</p>
-              <p class="dropzone-text-secondary">(Drag & Drop PDF or Click to Register)</p>
+              <p class="dropzone-text-primary" style="font-family: 'Manjari', sans-serif; font-size: 19px;">നിന്റെ റസ്യൂമെ ചായക്കടയിലെ സൂചിയിൽ കോർക്കുക!</p>
+              <p class="dropzone-text-secondary">(Drag & Drop PDF or Click to Spindle)</p>
               <p class="file-limit">Max size: 5MB | Max pages: 6</p>
               <input type="file" id="file-input" accept="application/pdf" style="display: none;">
             </div>
@@ -246,16 +258,19 @@
         </div>
       </section>
 
-      <!-- Physical Counter Loading Scene -->
+      <!-- Physical Counter Loading Scene (With Expanded Menu Card v4.9.3) -->
       <section id="loader-panel" class="wood-panel hidden">
         <div class="counter-scene">
           <div class="shop-price-board">
             <div class="price-header">കട്ടൻ ചായയും കടികളും</div>
-            <div class="price-item"><span>കട്ടൻ ചായ</span><span>₹6</span></div>
-            <div class="price-item"><span>പരിപ്പുവട</span><span>₹8</span></div>
-            <div class="price-item"><span>ഉണ്ടമ്പൊരി</span><span>₹8</span></div>
-            <div class="price-item"><span>ബോണ്ട</span><span>₹8</span></div>
-            <div class="price-item active"><span>തള്ള് പരിശോധന</span><span id="loading-rate-val">waiting...</span></div>
+            <div class="price-item"><span>കട്ടൻ ചായ (Black Tea)</span><span>₹6</span></div>
+            <div class="price-item"><span>ചായ (Milk Tea)</span><span>₹10</span></div>
+            <div class="price-item"><span>പരിപ്പുവട (Parippuvada)</span><span>₹8</span></div>
+            <div class="price-item"><span>ഉണ്ടമ്പൊരി (Undampori)</span><span>₹8</span></div>
+            <div class="price-item"><span>പഴംപൊരി (Pazhampori)</span><span>₹10</span></div>
+            <div class="price-item"><span>നെയ്യപ്പം (Neyyappam)</span><span>₹10</span></div>
+            <div class="price-item"><span>ബോണ്ട (Bonda)</span><span>₹8</span></div>
+            <div class="price-item active" style="margin-top: 6px;"><span>തള്ള് പരിശോധന</span><span id="loading-rate-val">waiting...</span></div>
           </div>
           
           <div class="steam-sim-group">
@@ -290,7 +305,7 @@
         
         <div class="ticker-box">
           <span class="terminal-symbol">&gt;</span>
-          <span id="ticker-text" class="ticker-text">ചായ അടിക്കുന്നു... കൂടെ നിന്റെ തള്ളലുകൾ അമ്മാവൻ അരിച്ചെടുക്കുന്നു...</span>
+          <span id="ticker-text" class="ticker-text">ചായ അടിക്കുന്നു... കൂടെ നിന്റെ തള്ളലുകൾ അമ്മാവൻ അരിച്ചെടുത്തു പൊളിക്കുന്നു...</span>
         </div>
       </section>
 
@@ -305,8 +320,11 @@
             <code id="fallback-error-msg" class="warning-error-code"></code>
           </div>
 
-          <!-- Opening Roast Beat -->
-          <div class="paper-card rotate-left">
+          <!-- Opening Roast Beat (Curling paper card v4.9.3) -->
+          <div class="paper-card rotate-left" style="position: relative;">
+            <div class="tape-strip"></div>
+            <div class="page-crease"></div>
+
             <div class="ledger-header">
               <span class="ledger-title" style="color: var(--signboard-red); display: flex; align-items: center; gap: 8px;">
                 <svg viewBox="0 0 100 100" width="18" height="18" fill="var(--signboard-red)" style="vertical-align: middle;">
@@ -321,21 +339,43 @@
             </p>
           </div>
 
-          <!-- Chief Inspection Verdict Note Pinned -->
+          <!-- Chief Inspection Verdict Pinned Note with Chalkboard Score Board (v4.9.3) -->
           <div class="pinned-note-verdict">
             <div class="tape-strip"></div>
+            <div class="page-crease"></div>
+            
             <div class="verdict-quote" id="punchline-text">
               "ഇത് resume അല്ല, തള്ളലിന്റെ തൃശൂർ പൂരമാണ്."
             </div>
+
+            <!-- Dynamic Chalk Dust Emitter Savage Scoreboard Badge -->
+            <div class="chalk-savage-container" style="margin-top: 20px; display: flex; flex-direction: column; align-items: center; gap: 6px;">
+              <span style="font-family: 'Special Elite', 'Noto Sans Malayalam', monospace; font-size: 12px; color: #6d5448; font-weight: bold; letter-spacing: 0.5px;">തള്ള് സ്കോർ (SAVAGE SCORE)</span>
+              
+              <div class="chalk-savage-score-badge" id="savage-score-badge">
+                <span id="chalk-savage-score">0</span> / 10
+                
+                <!-- Chalk particle blasts -->
+                <div class="chalk-dust p1"></div>
+                <div class="chalk-dust p2"></div>
+                <div class="chalk-dust p3"></div>
+                <div class="chalk-dust p4"></div>
+              </div>
+            </div>
           </div>
 
-          <!-- Interactive Ledger Folder with Hanging divider wood tags -->
-          <div class="wood-panel rotate-right" style="padding: 15px;">
-            <div class="folder-divider-tabs" id="folder-tabs-list">
-              <!-- Wooden tag tabs dynamically generated -->
+          <!-- Interactive Ledger Folder with Protruding Cardboard Indexing Tabs (Vertical Navigation v4.9.3) -->
+          <div class="ledger-folder-wrapper-vertical" style="display: flex; align-items: stretch; margin-bottom: 30px; gap: 0;">
+            <!-- Left Side cardboard tabs -->
+            <div class="folder-divider-tabs-vertical" id="folder-tabs-list">
+              <!-- Dynamically populated vertical Manilla folder cardboard tabs -->
             </div>
             
-            <div class="paper-card" style="border-top-left-radius: 0; border: 3px solid #5a4033; min-height: 250px;">
+            <!-- Tab Critique Card -->
+            <div class="paper-card" style="flex-grow: 1; border-top-left-radius: 0; border-bottom-left-radius: 0; border: 3px solid #5a4033; min-height: 260px; position: relative;">
+              <div class="tape-strip"></div>
+              <div class="page-crease"></div>
+
               <div class="roast-content-pane" id="folder-content-body">
                 <h2 class="roast-section-header" id="active-tab-heading">വിലാസവും വീരവാദവും</h2>
                 <p class="roast-section-body" id="active-tab-critique">
@@ -345,8 +385,11 @@
             </div>
           </div>
 
-          <!-- Final Verdict Card -->
+          <!-- Final Verdict Card (With Pinned Details v4.9.3) -->
           <div class="paper-card rotate-left-sm" style="border: 4px solid var(--signboard-red); background-color: #fdf5f5; position: relative;">
+            <div class="tape-strip"></div>
+            <div class="page-crease"></div>
+
             <div class="ledger-header" style="border-bottom: 2px solid var(--signboard-red);">
               <span class="ledger-title" style="color: var(--signboard-red);">തീരുമാനം (Final Verdict)</span>
               <span class="ledger-ref" style="background-color: var(--signboard-red); color: white;">HOPE LEVEL: ZERO</span>
@@ -359,7 +402,10 @@
           </div>
 
           <!-- Rehabilitation Notes Card -->
-          <div class="pinned-rehab-card">
+          <div class="pinned-rehab-card" style="position: relative;">
+            <div class="tape-strip"></div>
+            <div class="page-crease"></div>
+
             <h2 class="rehab-header">അമ്മാവന്റെ ചായക്കടയിലെ ഉപദേശങ്ങൾ (Rehab Tips)</h2>
             <ul class="rehab-list" id="rehab-tips-list">
               <!-- Tips list here -->
@@ -367,7 +413,10 @@
           </div>
 
           <!-- Motivational Close Card -->
-          <div class="motivational-card">
+          <div class="motivational-card" style="position: relative;">
+            <div class="tape-strip"></div>
+            <div class="page-crease"></div>
+
             <h2 class="motivational-header">മോട്ടിവേഷൻ കോർണർ (Pep Talk)</h2>
             <p class="motivational-body" id="motivational-close-text">
               പഠിച്ചു മുന്നേറ് മോനെ...

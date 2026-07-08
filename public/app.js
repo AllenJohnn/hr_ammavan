@@ -172,6 +172,87 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
+  // Spindle Paper Tear / Metal Thud Sound (v4.9.3)
+  function playTearSound() {
+    if (isMuted) return;
+    try {
+      const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      
+      // Low-frequency metallic thud
+      const osc = audioCtx.createOscillator();
+      const gainOsc = audioCtx.createGain();
+      osc.frequency.setValueAtTime(110, audioCtx.currentTime);
+      osc.frequency.exponentialRampToValueAtTime(10, audioCtx.currentTime + 0.15);
+      gainOsc.gain.setValueAtTime(0.7, audioCtx.currentTime);
+      gainOsc.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.18);
+      osc.connect(gainOsc);
+      gainOsc.connect(audioCtx.destination);
+      osc.start();
+      osc.stop(audioCtx.currentTime + 0.2);
+
+      // High-pass noise tear burst
+      const bufferSize = audioCtx.sampleRate * 0.12;
+      const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+      const data = buffer.getChannelData(0);
+      for (let i = 0; i < bufferSize; i++) {
+        data[i] = Math.random() * 2 - 1;
+      }
+      const noise = audioCtx.createBufferSource();
+      noise.buffer = buffer;
+      
+      const filter = audioCtx.createBiquadFilter();
+      filter.type = 'highpass';
+      filter.frequency.value = 1800;
+
+      const gainNoise = audioCtx.createGain();
+      gainNoise.gain.setValueAtTime(0.2, audioCtx.currentTime);
+      gainNoise.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.1);
+
+      noise.connect(filter);
+      filter.connect(gainNoise);
+      gainNoise.connect(audioCtx.destination);
+
+      noise.start();
+      noise.stop(audioCtx.currentTime + 0.15);
+    } catch (e) {
+      // ignore
+    }
+  }
+
+  // Cardboard page flip sound (v4.9.3)
+  function playPageFlipSound() {
+    if (isMuted) return;
+    try {
+      const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      const bufferSize = audioCtx.sampleRate * 0.15;
+      const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+      const data = buffer.getChannelData(0);
+      for (let i = 0; i < bufferSize; i++) {
+        data[i] = Math.random() * 2 - 1;
+      }
+      const noise = audioCtx.createBufferSource();
+      noise.buffer = buffer;
+
+      const filter = audioCtx.createBiquadFilter();
+      filter.type = 'bandpass';
+      filter.frequency.value = 1000;
+      filter.Q.value = 3;
+
+      const gainNode = audioCtx.createGain();
+      gainNode.gain.setValueAtTime(0.3, audioCtx.currentTime);
+      gainNode.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.14);
+
+      noise.connect(filter);
+      filter.connect(gainNode);
+      gainNode.connect(audioCtx.destination);
+
+      noise.start();
+      noise.stop(audioCtx.currentTime + 0.15);
+    } catch (e) {
+      // ignore
+    }
+  }
+
   // Drag and Drop Event Handlers
   dropzone.addEventListener('dragover', (e) => {
     e.preventDefault();
@@ -213,7 +294,15 @@ document.addEventListener('DOMContentLoaded', () => {
       return;
     }
     
-    startInspection(file);
+    // Play physical tear/impale sound and trigger visual spindle classes before start (v4.9.3)
+    dropzone.classList.add('impaled');
+    const tearVisual = document.getElementById('spindle-tear');
+    if (tearVisual) tearVisual.classList.remove('hidden');
+    playTearSound();
+
+    setTimeout(() => {
+      startInspection(file);
+    }, 450);
   }
 
   function showErrorAlert(message) {
@@ -382,6 +471,18 @@ document.addEventListener('DOMContentLoaded', () => {
       fallbackWarningBox.classList.add('hidden');
     }
 
+    // Render the savage score on the chalkboard score badge
+    const scoreBadge = document.getElementById('savage-score-badge');
+    const scoreVal = document.getElementById('chalk-savage-score');
+    if (scoreVal) scoreVal.textContent = score;
+    if (scoreBadge) {
+      scoreBadge.classList.remove('revealed');
+      setTimeout(() => {
+        scoreBadge.classList.add('revealed');
+        playSlamSound(); // Slaps down with metallic audio
+      }, 250);
+    }
+
     // Reset certified stamp state before typing starts
     const stamp = document.getElementById('certified-fluff-stamp');
     if (stamp) {
@@ -411,7 +512,7 @@ document.addEventListener('DOMContentLoaded', () => {
       rehabTipsList.appendChild(li);
     });
 
-    // 3. Map Malayalam JSON properties onto folder tabs (v4.1)
+    // 3. Map Malayalam JSON properties onto folder tabs (v4.1 - Manila vertical cardboard tags v4.9.3)
     const sections = [
       { id: 'skills', label: 'Skills', heading: '💣 Skills എന്ന മിഥ്യ', critique: data.skills_roast },
       { id: 'projects', label: 'Projects', heading: '📊 Projects/Profile എന്ന വലിയ തള്ള്', critique: data.projects_roast },
@@ -422,13 +523,14 @@ document.addEventListener('DOMContentLoaded', () => {
     folderTabsList.innerHTML = '';
     sections.forEach((sec, idx) => {
       const tabButton = document.createElement('button');
-      tabButton.className = `folder-tab ${idx === 0 ? 'active' : ''}`;
+      tabButton.className = `folder-tab-vertical ${idx === 0 ? 'active' : ''}`;
       tabButton.textContent = sec.label;
       
       tabButton.addEventListener('click', () => {
-        document.querySelectorAll('.folder-tab').forEach(btn => btn.classList.remove('active'));
+        document.querySelectorAll('.folder-tab-vertical').forEach(btn => btn.classList.remove('active'));
         tabButton.classList.add('active');
         
+        playPageFlipSound(); // Page flip SFX
         activeTabHeading.textContent = sec.heading;
         typeWriteText(activeTabCritique, formatMarkdown(sec.critique));
       });
@@ -479,6 +581,16 @@ document.addEventListener('DOMContentLoaded', () => {
       stamp.classList.add('hidden');
       stamp.classList.remove('slammed');
     }
+
+    const scoreBadge = document.getElementById('savage-score-badge');
+    if (scoreBadge) {
+      scoreBadge.classList.remove('revealed');
+    }
+
+    // Reset Spindle desk spike zone
+    dropzone.classList.remove('impaled');
+    const tearVisual = document.getElementById('spindle-tear');
+    if (tearVisual) tearVisual.classList.add('hidden');
     
     resultPanel.classList.add('hidden');
     uploadPanel.classList.remove('hidden');
