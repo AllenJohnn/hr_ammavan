@@ -319,9 +319,17 @@ document.addEventListener('DOMContentLoaded', () => {
     systemStatus.textContent = "തള്ളിമറിച്ച പേപ്പർ ഇരന്നു വാങ്ങുന്നു...";
     systemStatus.className = "status-value text-gold";
     
-    loadingRateVal.textContent = "processing...";
-    loadingRateVal.style.color = 'var(--chalk-yellow)';
+    loadingRateVal.textContent = "0%";
+    loadingRateVal.style.color = 'var(--brass-gold)';
     
+    // Reset snack cabinet to empty v4.9.4
+    const snack1 = document.getElementById('shelf-snack-parippuvada');
+    const snack2 = document.getElementById('shelf-snack-pazhampori');
+    const snack3 = document.getElementById('shelf-snack-neyyappam');
+    if (snack1) { snack1.classList.add('hidden-snack'); snack1.classList.remove('visible-snack'); }
+    if (snack2) { snack2.classList.add('hidden-snack'); snack2.classList.remove('visible-snack'); }
+    if (snack3) { snack3.classList.add('hidden-snack'); snack3.classList.remove('visible-snack'); }
+
     // Activate tea counter pour streams
     activeTeaLiquid.style.height = '0%';
     teaPourStream.classList.add('active');
@@ -337,7 +345,33 @@ document.addEventListener('DOMContentLoaded', () => {
         
         progressFill.style.width = `${progress}%`;
         activeTeaLiquid.style.height = `${progress}%`;
+        loadingRateVal.textContent = `${progress}%`;
+        const pctElement = document.getElementById('loading-rate-val-percent');
+        if (pctElement) pctElement.textContent = `${progress}%`;
         
+        // Progressive snacks in Kannadi Alamara (v4.9.4)
+        if (progress >= 20 && snack1) {
+          if (snack1.classList.contains('hidden-snack')) {
+            snack1.classList.remove('hidden-snack');
+            snack1.classList.add('visible-snack');
+            playClickSound(); // light drop sound
+          }
+        }
+        if (progress >= 50 && snack2) {
+          if (snack2.classList.contains('hidden-snack')) {
+            snack2.classList.remove('hidden-snack');
+            snack2.classList.add('visible-snack');
+            playClickSound();
+          }
+        }
+        if (progress >= 75 && snack3) {
+          if (snack3.classList.contains('hidden-snack')) {
+            snack3.classList.remove('hidden-snack');
+            snack3.classList.add('visible-snack');
+            playClickSound();
+          }
+        }
+
         // Update live status message in Malayalam based on progress
         if (progress < 30) {
           systemStatus.textContent = "റസ്യൂമെ അമ്മാവൻ തിരിച്ചും മറിച്ചും നോക്കുന്നു...";
@@ -368,6 +402,15 @@ document.addEventListener('DOMContentLoaded', () => {
       body: formData
     })
     .then(async (response) => {
+      // Catch status 429 Rate Limit Interceptor (v4.9.4 KSRTC Breakdown Wall)
+      if (response.status === 429) {
+        const modal = document.getElementById('rate-limit-modal');
+        if (modal) {
+          modal.classList.remove('hidden');
+        }
+        playBuzzerSound();
+        throw new Error("RATE_LIMIT_EXCEEDED");
+      }
       const data = await response.json();
       if (!response.ok) {
         throw new Error(data.message || "Failed to inspect resume.");
@@ -380,8 +423,16 @@ document.addEventListener('DOMContentLoaded', () => {
       progressFill.style.width = '100%';
       activeTeaLiquid.style.height = '100%';
       teaPourStream.classList.remove('active');
-      loadingRateVal.textContent = 'DONE';
+      loadingRateVal.textContent = '100%';
       loadingRateVal.style.color = '#55a630';
+      const pctElement = document.getElementById('loading-rate-val-percent');
+      if (pctElement) pctElement.textContent = '100%';
+
+      // Drop final snack (Neyyappam) if not already visible
+      if (snack3 && snack3.classList.contains('hidden-snack')) {
+        snack3.classList.remove('hidden-snack');
+        snack3.classList.add('visible-snack');
+      }
 
       setTimeout(() => {
         showRoastResult(data);
@@ -390,15 +441,16 @@ document.addEventListener('DOMContentLoaded', () => {
     .catch((err) => {
       clearInterval(loadingInterval);
       loaderPanel.classList.add('hidden');
-      uploadPanel.classList.remove('hidden');
       
       teaPourStream.classList.remove('active');
       activeTeaLiquid.style.height = '0%';
       
-      systemStatus.textContent = "ചായ കുടി കഴിഞ്ഞു വെറ്റില മുറുക്കുന്നു...";
-      systemStatus.className = "status-value pulse-green";
-      
-      showErrorAlert(err.message || "എന്തോ കുഴപ്പം സംഭവിച്ചു! അമ്മാവന് വണ്ടിക്കൂലി കിട്ടിയിട്ടില്ല എന്ന് തോന്നുന്നു.");
+      if (err.message !== "RATE_LIMIT_EXCEEDED") {
+        uploadPanel.classList.remove('hidden');
+        systemStatus.textContent = "ചായ കുടി കഴിഞ്ഞു വെറ്റില മുറുക്കുന്നു...";
+        systemStatus.className = "status-value pulse-green";
+        showErrorAlert(err.message || "എന്തോ കുഴപ്പം സംഭവിച്ചു! അമ്മാവന് വണ്ടിക്കൂലി കിട്ടിയിട്ടില്ല എന്ന് തോന്നുന്നു.");
+      }
     });
   }
 

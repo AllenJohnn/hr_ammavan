@@ -258,10 +258,10 @@
         </div>
       </section>
 
-      <!-- Physical Counter Loading Scene (With Expanded Menu Card v4.9.3) -->
+      <!-- Physical Counter Loading Scene (With Kannadi Alamara & Snack display v4.9.4) -->
       <section id="loader-panel" class="wood-panel hidden">
-        <div class="counter-scene">
-          <div class="shop-price-board">
+        <div class="counter-scene" style="display: flex; flex-direction: column; gap: 15px; align-items: center;">
+          <div class="shop-price-board" style="align-self: flex-start; width: 100%;">
             <div class="price-header">കട്ടൻ ചായയും കടികളും</div>
             <div class="price-item"><span>കട്ടൻ ചായ (Black Tea)</span><span>₹6</span></div>
             <div class="price-item"><span>ചായ (Milk Tea)</span><span>₹10</span></div>
@@ -279,22 +279,39 @@
             <div class="steam-cloud s3"></div>
           </div>
           
-          <div id="tea-pour-stream" class="pouring-tea-stream"></div>
-          
-          <div class="tea-counter-table">
-            <div class="steel-tumbler-shelf">
-              <div class="steel-tumbler-mini"></div>
-              <div class="steel-tumbler-mini"></div>
-            </div>
-            
-            <div class="tea-glass-active">
-              <div id="active-tea-liquid" class="glass-tea-liquid">
-                <div class="tea-froth"></div>
+          <!-- Kannadi Alamara & Rising Fluid chassis (v4.9.4 UI specs) -->
+          <div class="loader-chassis-container">
+            <!-- Visual Section A: The Kannadi Alamara Snack Asset Display -->
+            <div class="kannadi-alamara">
+              <div class="alamara-label">SHELF_v1.0</div>
+              
+              <div id="shelf-snack-parippuvada" class="shelf-snack hidden-snack animate-bounce-snack">
+                <span class="snack-emoji">🧆</span>
+                <span class="snack-name">പരിപ്പുവട</span>
+              </div>
+              
+              <div id="shelf-snack-pazhampori" class="shelf-snack hidden-snack animate-bounce-snack">
+                <span class="snack-emoji">🍌</span>
+                <span class="snack-name">പഴംപൊരി</span>
+              </div>
+              
+              <div id="shelf-snack-neyyappam" class="shelf-snack hidden-snack animate-bounce-snack">
+                <span class="snack-emoji">🍩</span>
+                <span class="snack-name">നെയ്യപ്പം</span>
               </div>
             </div>
-            
-            <div class="steel-tumbler-shelf">
-              <div class="steel-tumbler-mini"></div>
+
+            <!-- Visual Section B: The Rising Fluid Glass -->
+            <div class="rising-fluid-wrapper">
+              <div class="tea-glass-frame">
+                <!-- Dynamic Rising Fluid Mask -->
+                <div id="active-tea-liquid" class="glass-tea-liquid">
+                  <div class="tea-froth"></div>
+                </div>
+                <!-- Tea Pour Stream -->
+                <div id="tea-pour-stream" class="pouring-tea-stream"></div>
+              </div>
+              <p class="brewing-percentage">BREWING: <span id="loading-rate-val-percent">0%</span></p>
             </div>
           </div>
         </div>
@@ -472,6 +489,36 @@
         © 2026 AllenJohnn. All Rights Reserved.
       </div>
     </footer>
+  </div>
+
+  <!-- KSRTC Breakdown Modal (Rate-Limit Interceptor v4.9.4) -->
+  <div id="rate-limit-modal" class="rate-limit-overlay hidden">
+    <div class="ksrtc-breakdown-card">
+      <!-- Glowing mechanical alert hazard elements -->
+      <div class="hazard-tag animate-pulse">
+        ⚠ SERVICE_SUSPENDED
+      </div>
+
+      <!-- Main Notice Box -->
+      <div class="ksrtc-notice-box">
+        <h2 class="ksrtc-title">
+          സർവീസ് തടസ്സപ്പെട്ടിരിക്കുന്നു!
+        </h2>
+        <p class="ksrtc-description">
+          അമ്മാവന്റെ ചായക്കടയിൽ ആളുകൂടി ബോയിലർ അടിച്ചുപോയി! നിന്റെ റെസ്യൂമെയിലെ തള്ളലുകൾ അരിക്കാൻ ഉള്ള കപ്പാസിറ്റി നിലവിൽ സിസ്റ്റത്തിനില്ല.
+        </p>
+        
+        <div class="ksrtc-details-box">
+          <p class="ksrtc-detail-line"><span class="detail-label">[REASON]:</span> 429_TOO_MANY_THALLS_SPAM_DETECTED</p>
+          <p class="ksrtc-detail-line mt-1"><span class="detail-label">[REMEDY]:</span> ചായ തണുക്കാൻ കുറച്ചു സമയം എടുക്കും. ഒരു മണിക്കൂറിൽ പരമാവധി 10 റെസ്യൂമെ മാത്രമേ അമ്മാവൻ നോക്കൂ. കുറച്ചു കഴിഞ്ഞു വാ മോനെ...</p>
+        </div>
+
+        <!-- Disabled mock button -->
+        <button disabled class="btn-ksrtc-disabled">
+          അമ്മാവന് വിശ്രമം ആവശ്യമാണ്
+        </button>
+      </div>
+    </div>
   </div>
   
   <script src="app.js"></script>

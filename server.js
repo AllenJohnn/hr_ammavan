@@ -14,6 +14,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const app = express();
+app.set('trust proxy', true);
 const PORT = process.env.PORT || 3000;
 
 app.use(cors());
@@ -50,9 +51,10 @@ const saveCache = () => {
   }
 };
 
-// Rate Limiting Middleware
+// Rate Limiting Middleware (Extracts true client IP on proxies like Vercel v4.9.4)
 const checkRateLimit = (req, res, next) => {
-  const ip = req.ip || req.headers['x-forwarded-for'] || 'unknown';
+  const forwarded = req.headers['x-forwarded-for'];
+  const ip = forwarded ? forwarded.split(',')[0].trim() : (req.ip || req.socket.remoteAddress || 'unknown');
   const now = Date.now();
   const oneHour = 60 * 60 * 1000;
 

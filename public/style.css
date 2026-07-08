@@ -1576,3 +1576,220 @@ body {
 .certified-stamp.slammed {
   animation: stampSlam 0.45s cubic-bezier(0.18, 0.89, 0.32, 1.28) forwards;
 }
+
+/* ==========================================================================
+   🖼|| KANNADI ALAMARA SNACK CABINET (v4.9.4 Loading Display)
+   ========================================================================== */
+
+.loader-chassis-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 25px;
+  background-color: var(--wood-base);
+  background-image: var(--grain-texture);
+  border: 3.5px solid var(--brass-gold);
+  border-radius: 4px;
+  padding: 20px;
+  max-width: 480px;
+  margin: 20px auto;
+  box-shadow: 0 6px 15px rgba(0,0,0,0.5);
+  transform: rotate(-1deg);
+}
+
+.kannadi-alamara {
+  width: 150px;
+  height: 130px;
+  border: 2px dashed rgba(212, 175, 55, 0.4);
+  background-color: #160c07;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  gap: 6px;
+  padding: 10px 8px;
+  border-radius: 2px;
+  box-shadow: inset 0 0 10px rgba(0,0,0,0.9);
+}
+
+.alamara-label {
+  position: absolute;
+  top: 2px;
+  left: 4px;
+  font-family: monospace;
+  font-size: 8px;
+  color: rgba(212, 175, 55, 0.2);
+  user-select: none;
+}
+
+.shelf-snack {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background-color: rgba(43, 24, 16, 0.85);
+  border: 1px solid rgba(212, 175, 55, 0.2);
+  padding: 4px 6px;
+  border-radius: 2px;
+  transition: opacity 0.4s ease, transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.hidden-snack {
+  opacity: 0;
+  transform: scale(0.6) translateY(8px);
+  pointer-events: none;
+}
+
+.visible-snack {
+  opacity: 1;
+  transform: scale(1) translateY(0);
+}
+
+.snack-emoji {
+  font-size: 16px;
+}
+
+.snack-name {
+  font-family: 'Noto Sans Malayalam', sans-serif;
+  font-size: 9px;
+  color: var(--paper-cream);
+  font-weight: bold;
+}
+
+.animate-bounce-snack {
+  animation: bounceSnack 2s infinite alternate;
+}
+
+@keyframes bounceSnack {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(-4px); }
+}
+
+.rising-fluid-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.tea-glass-frame {
+  width: 50px;
+  height: 80px;
+  border: 3.5px solid var(--brass-gold);
+  border-top-width: 1px;
+  border-bottom-width: 6px;
+  border-radius: 0 0 4px 4px;
+  position: relative;
+  background-color: rgba(0,0,0,0.55);
+  overflow: hidden;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.4);
+}
+
+.brewing-percentage {
+  font-family: 'Special Elite', monospace;
+  font-size: 11px;
+  color: var(--brass-gold);
+  margin-top: 8px;
+  letter-spacing: 1px;
+}
+
+/* ==========================================================================
+   🚌 KSRTC BREAKDOWN RATE LIMIT MODAL (v4.9.4 Blocker)
+   ========================================================================== */
+
+.rate-limit-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(17, 17, 17, 0.96);
+  background-image: var(--grain-texture);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 10000;
+  padding: 20px;
+}
+
+.ksrtc-breakdown-card {
+  width: 100%;
+  max-width: 600px;
+  background-color: #111111;
+  background-image: var(--grain-texture);
+  border: 4px solid var(--signboard-red);
+  padding: 30px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.85);
+  position: relative;
+  transform: rotate(-1deg);
+}
+
+.hazard-tag {
+  position: absolute;
+  top: -14px;
+  left: 20px;
+  background-color: var(--signboard-red);
+  color: #fff;
+  padding: 4px 10px;
+  font-family: 'Special Elite', monospace;
+  font-size: 11px;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.4);
+}
+
+.ksrtc-notice-box {
+  border: 2px dashed rgba(179, 58, 46, 0.5);
+  padding: 20px;
+  text-align: center;
+}
+
+.ksrtc-title {
+  font-family: 'Noto Sans Malayalam', sans-serif;
+  font-size: 22px;
+  font-weight: bold;
+  color: var(--signboard-red);
+  margin-bottom: 12px;
+}
+
+.ksrtc-description {
+  font-family: 'Noto Sans Malayalam', serif;
+  font-size: 14px;
+  color: var(--paper-cream);
+  line-height: 1.7;
+  margin-bottom: 20px;
+}
+
+.ksrtc-details-box {
+  background-color: var(--wood-base);
+  background-image: var(--grain-texture);
+  border: 1px solid rgba(179, 58, 46, 0.3);
+  padding: 12px;
+  text-align: left;
+  margin-bottom: 20px;
+}
+
+.ksrtc-detail-line {
+  font-family: 'Special Elite', 'Noto Sans Malayalam', monospace;
+  font-size: 12px;
+  color: var(--brass-gold);
+}
+
+.detail-label {
+  color: var(--signboard-red);
+  font-weight: bold;
+}
+
+.btn-ksrtc-disabled {
+  width: 100%;
+  padding: 12px;
+  background-color: #262626;
+  color: #666;
+  border: 1px solid #333;
+  font-family: 'Noto Sans Malayalam', sans-serif;
+  font-size: 13px;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  cursor: not-allowed;
+}
+
