@@ -308,7 +308,8 @@ function generateFallbackRoast(baseScore, triggeredFlags, fallbackError = 'GEMIN
     rehabilitation_tips: rehabilitationTips,
     motivational_close: motivationalClose,
     fallback_mode: true,
-    fallback_error: fallbackError
+    fallback_error: fallbackError,
+    triggered_flags: triggeredFlags
   };
 }
 
@@ -443,7 +444,7 @@ ${text.substring(0, 10000)} // Truncated to avoid token blowout
             },
             one_liner_punchline: {
               type: "STRING",
-              description: "Savage, viral, contextually accurate Malayalam one-liner for the share image."
+              description: "When writing the 'one_liner_punchline' value, you must strictly construct the sentence using 60 characters or fewer. You are explicitly forbidden from appending generic commentary, introductory greetings, or wrapping the output inside nested arrays. The sentence must fit precisely inside a portrait social media sharing card."
             },
             skills_roast: {
               type: "STRING",
@@ -517,6 +518,7 @@ ${text.substring(0, 10000)} // Truncated to avoid token blowout
       
       parsedJSON.overall_savage_score = baseScore;
       parsedJSON.fallback_mode = false;
+      parsedJSON.triggered_flags = triggeredFlags;
 
       // Save to cache
       roastCache[contentHash] = parsedJSON;

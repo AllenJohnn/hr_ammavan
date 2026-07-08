@@ -47,15 +47,28 @@ document.addEventListener('DOMContentLoaded', () => {
   let activeRoastData = null;
   let isMuted = false;
 
-  // 1. Mouse Parallax Palm Fronds
-  window.addEventListener('mousemove', (e) => {
-    const moveX = (e.clientX - window.innerWidth / 2) / 45;
-    const moveY = (e.clientY - window.innerHeight / 2) / 45;
+  // 1. Mouse Parallax Palm Fronds & Torchlight Tracking (v4.9.5)
+  function updatePointer(x, y) {
+    document.documentElement.style.setProperty('--mouse-x', `${x}px`);
+    document.documentElement.style.setProperty('--mouse-y', `${y}px`);
+
+    const moveX = (x - window.innerWidth / 2) / 45;
+    const moveY = (y - window.innerHeight / 2) / 45;
     
     palmFronds.forEach((frond, idx) => {
       const factor = (idx + 1) * 0.45;
       frond.style.transform = `translate(${moveX * factor}px, ${moveY * factor}px)`;
     });
+  }
+
+  window.addEventListener('mousemove', (e) => {
+    updatePointer(e.clientX, e.clientY);
+  });
+
+  window.addEventListener('touchmove', (e) => {
+    if (e.touches.length > 0) {
+      updatePointer(e.touches[0].clientX, e.touches[0].clientY);
+    }
   });
 
   // Sound Toggle Switch Listener (v4.6)
@@ -597,7 +610,16 @@ document.addEventListener('DOMContentLoaded', () => {
       typeWriteText(activeTabCritique, formatMarkdown(sections[0].critique));
     }
 
-    // 4. Coconut Drop Event for Savage scores (score >= 9)
+    // Punch KSRTC ticket spots (v4.9.5)
+    document.querySelectorAll('.punch-spot').forEach(spot => {
+      spot.classList.remove('punched');
+      const flag = spot.getAttribute('data-flag');
+      if (data.triggered_flags && data.triggered_flags.includes(flag)) {
+        spot.classList.add('punched');
+      }
+    });
+
+    // 4. Coconut Drop & Extreme Savage Score Rain Trigger (v4.9.5)
     coconutDrop.classList.remove('drop');
     
     if (score >= 9) {
@@ -605,6 +627,9 @@ document.addEventListener('DOMContentLoaded', () => {
         document.body.classList.add('screen-shake');
         coconutDrop.classList.add('drop');
         playSlamSound();
+        
+        // Dynamic HTML5/CSS monsoon rain & lightning flash
+        startMonsoonRain();
         
         setTimeout(() => {
           document.body.classList.remove('screen-shake');
@@ -661,6 +686,112 @@ document.addEventListener('DOMContentLoaded', () => {
     { threshold: 50, text: "ആമസോൺ സർട്ടിഫിക്കറ്റ് രണ്ടു തവണ കോപ്പി പേസ്റ്റ് ചെയ്ത കള്ളത്തരം പൊക്കി..." },
     { threshold: 75, text: "ചായ റെഡി! നിന്റെ റെസ്യൂമെ കീറി ഒട്ടിക്കാൻ അമ്മാവൻ സീറ്റിൽ എത്തി..." }
   ];
+
+  // HTML5 Canvas Monsoon Rain Generator (v4.9.5 Extreme Savage Score Effect)
+  function startMonsoonRain() {
+    const canvas = document.getElementById('monsoon-rain-canvas');
+    if (!canvas) return;
+    canvas.classList.remove('hidden');
+    const ctx = canvas.getContext('2d');
+    
+    let width = canvas.width = window.innerWidth;
+    let height = canvas.height = window.innerHeight;
+    
+    window.addEventListener('resize', () => {
+      width = canvas.width = window.innerWidth;
+      height = canvas.height = window.innerHeight;
+    });
+    
+    const maxDrops = 160;
+    const drops = [];
+    for (let i = 0; i < maxDrops; i++) {
+      drops.push({
+        x: Math.random() * width,
+        y: Math.random() * height,
+        len: Math.random() * 22 + 10,
+        ys: Math.random() * 12 + 10,
+        xs: Math.random() * 2 - 1
+      });
+    }
+    
+    function draw() {
+      ctx.clearRect(0, 0, width, height);
+      ctx.strokeStyle = 'rgba(174, 194, 224, 0.14)';
+      ctx.lineWidth = 1;
+      ctx.lineCap = 'round';
+      
+      for (let i = 0; i < maxDrops; i++) {
+        const d = drops[i];
+        ctx.beginPath();
+        ctx.moveTo(d.x, d.y);
+        ctx.lineTo(d.x + d.xs, d.y + d.len);
+        ctx.stroke();
+        
+        d.x += d.xs;
+        d.y += d.ys;
+        if (d.y > height) {
+          d.x = Math.random() * width;
+          d.y = -22;
+        }
+      }
+      
+      // Random lightning flash trigger (approx 0.7% chance per frame)
+      if (Math.random() < 0.007) {
+        triggerLightningFlash();
+      }
+      
+      requestAnimationFrame(draw);
+    }
+    
+    function triggerLightningFlash() {
+      const flash = document.createElement('div');
+      flash.className = 'lightning-flash';
+      document.body.appendChild(flash);
+      
+      // Play low rumble audio
+      playThunderRumble();
+
+      setTimeout(() => {
+        flash.remove();
+      }, 150);
+    }
+    
+    draw();
+  }
+
+  function playThunderRumble() {
+    if (isMuted) return;
+    try {
+      const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      const osc = audioCtx.createOscillator();
+      const gainNode = audioCtx.createGain();
+      osc.type = 'sawtooth';
+      osc.frequency.setValueAtTime(45, audioCtx.currentTime);
+      osc.frequency.linearRampToValueAtTime(10, audioCtx.currentTime + 0.8);
+      
+      const filter = audioCtx.createBiquadFilter();
+      filter.type = 'lowpass';
+      filter.frequency.value = 95;
+      
+      gainNode.gain.setValueAtTime(0.7, audioCtx.currentTime);
+      gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.8);
+      
+      osc.connect(filter);
+      filter.connect(gainNode);
+      gainNode.connect(audioCtx.destination);
+      osc.start();
+      osc.stop(audioCtx.currentTime + 0.85);
+    } catch (e) {
+      // ignore
+    }
+  }
+
+  // System Time Ambiance Trigger (Power Cut mode v4.9.5)
+  const nowTime = new Date();
+  const currentHour = nowTime.getHours();
+  if (currentHour >= 18 || currentHour < 6) { // Past 6:00 PM or before 6:00 AM
+    document.body.classList.add('power-cut-mode');
+  }
 
   // Disable Right-Click and DevTools Hotkeys (v4.9.5 Code Protection)
   document.addEventListener('contextmenu', (e) => {

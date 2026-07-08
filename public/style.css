@@ -1793,3 +1793,129 @@ body {
   cursor: not-allowed;
 }
 
+/* ==========================================================================
+   🎫 KSRTC PINK PUNCH-TICKET (v4.9.5 Bus Ticket Component)
+   ========================================================================== */
+
+.ksrtc-ticket-card {
+  background-color: #F3C1C6;
+  background-image: var(--grain-texture);
+  position: relative;
+  border-top: 1.5px dashed rgba(0, 0, 0, 0.3);
+  border-bottom: 1.5px dashed rgba(0, 0, 0, 0.3);
+  padding: 20px 25px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+  border-radius: 2px;
+  color: #111;
+  max-width: 520px;
+  margin: 20px auto;
+}
+
+.ksrtc-ticket-left-edge {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: -2px;
+  width: 6px;
+  background-image: radial-gradient(circle, transparent 4px, #F3C1C6 4px);
+  background-size: 8px 16px;
+}
+
+.ksrtc-ticket-right-edge {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: -2px;
+  width: 6px;
+  background-image: radial-gradient(circle, transparent 4px, #F3C1C6 4px);
+  background-size: 8px 16px;
+}
+
+.punch-spot {
+  position: relative;
+  color: #4a2c30;
+  font-weight: bold;
+  padding: 2px 4px;
+  border-radius: 1px;
+}
+
+.punch-spot.punched::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 12px;
+  height: 12px;
+  background-color: #111111; /* Represents the punched hole */
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: inset 0 1px 2px rgba(0,0,0,0.8);
+  animation: punchImpact 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+@keyframes punchImpact {
+  0% { transform: translate(-50%, -50%) scale(2.5); opacity: 0; }
+  100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+}
+
+/* ==========================================================================
+   🔦 BRASS TORCHLIGHT LIGHTING SHADERS (v4.9.5 Reveal)
+   ========================================================================== */
+
+.torch-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: radial-gradient(
+    circle 200px at var(--mouse-x, 50%) var(--mouse-y, 50%),
+    rgba(17, 17, 17, 0.05) 0%,
+    rgba(17, 17, 17, 0.88) 75%
+  );
+  pointer-events: none;
+  z-index: 2; /* Cover background trees and wood, keep inputs & cards readable */
+}
+
+.torch-glow {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: radial-gradient(
+    circle 200px at var(--mouse-x, 50%) var(--mouse-y, 50%),
+    rgba(252, 230, 152, 0.16) 0%,
+    rgba(252, 230, 152, 0.04) 50%,
+    transparent 100%
+  );
+  pointer-events: none;
+  z-index: 3;
+}
+
+/* Rain Lightning Flash Overlay (v4.9.5) */
+.lightning-flash {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(255, 255, 255, 0.75);
+  pointer-events: none;
+  z-index: 20000;
+  animation: flashFade 0.15s ease-out forwards;
+}
+
+@keyframes flashFade {
+  0% { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+/* System Clock powercut class */
+body.power-cut-mode {
+  filter: contrast(1.04) brightness(0.72);
+  transition: filter 2.5s ease-in-out;
+}
+
+
