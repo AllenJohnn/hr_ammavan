@@ -518,7 +518,9 @@ document.addEventListener('DOMContentLoaded', () => {
     // Developer Warning Badge
     if (data.fallback_mode) {
       fallbackWarningBox.classList.remove('hidden');
-      fallbackErrorMsg.textContent = data.fallback_error || 'GEMINI_API_KEY environment variable is missing.';
+      if (fallbackErrorMsg) {
+        fallbackErrorMsg.textContent = data.fallback_error || 'GEMINI_API_KEY environment variable is missing.';
+      }
     } else {
       fallbackWarningBox.classList.add('hidden');
     }
@@ -659,4 +661,20 @@ document.addEventListener('DOMContentLoaded', () => {
     { threshold: 50, text: "ആമസോൺ സർട്ടിഫിക്കറ്റ് രണ്ടു തവണ കോപ്പി പേസ്റ്റ് ചെയ്ത കള്ളത്തരം പൊക്കി..." },
     { threshold: 75, text: "ചായ റെഡി! നിന്റെ റെസ്യൂമെ കീറി ഒട്ടിക്കാൻ അമ്മാവൻ സീറ്റിൽ എത്തി..." }
   ];
+
+  // Disable Right-Click and DevTools Hotkeys (v4.9.5 Code Protection)
+  document.addEventListener('contextmenu', (e) => {
+    e.preventDefault();
+  });
+
+  document.addEventListener('keydown', (e) => {
+    // Disable F12
+    if (e.key === 'F12') {
+      e.preventDefault();
+    }
+    // Disable Ctrl+Shift+I, Ctrl+Shift+J, Ctrl+Shift+C, Ctrl+U, Ctrl+S
+    if (e.ctrlKey && (e.shiftKey && (e.key === 'I' || e.key === 'i' || e.key === 'J' || e.key === 'j' || e.key === 'C' || e.key === 'c') || (e.key === 'U' || e.key === 'u' || e.key === 'S' || e.key === 's'))) {
+      e.preventDefault();
+    }
+  });
 });
