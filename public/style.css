@@ -29,16 +29,17 @@
 }
 
 body {
-  background-color: #170d08;
-  background-image: 
+  background: 
     /* Vertical wood panel seams */
     linear-gradient(90deg, rgba(0,0,0,0.3) 0px, rgba(0,0,0,0.3) 3px, transparent 3px),
     /* Horizontal wood panel grains */
     linear-gradient(rgba(0,0,0,0.2) 0px, rgba(0,0,0,0.2) 4px, transparent 4px),
     /* Aged fine grain */
     repeating-linear-gradient(180deg, rgba(255,255,255,0.015) 0px, rgba(255,255,255,0.015) 1px, transparent 1px, transparent 5px),
+    /* Elevated ambient center glow using high-value copper-amber tones */
+    radial-gradient(circle at 50% 35%, #3D2216 0%, #1D100A 60%, #0A0503 100%),
     var(--grain-texture);
-  background-size: 140px 100%, 100% 70px, 100% 3px, auto;
+  background-size: 140px 100%, 100% 70px, 100% 3px, auto, auto;
   color: var(--text-light);
   font-family: 'Special Elite', 'Noto Sans Malayalam', serif;
   font-size: 16px;
@@ -46,6 +47,10 @@ body {
   overflow-x: hidden;
   position: relative;
   min-height: 100vh;
+}
+
+.chayakkada-wall {
+  position: relative;
 }
 
 .terminal-bg-scanlines {
@@ -1871,8 +1876,8 @@ body {
   height: 100vh;
   background: radial-gradient(
     circle 200px at var(--mouse-x, 50%) var(--mouse-y, 50%),
-    rgba(17, 17, 17, 0.05) 0%,
-    rgba(17, 17, 17, 0.88) 75%
+    transparent 100%,
+    rgba(12, 8, 6, 0.92) 0%
   );
   pointer-events: none;
   z-index: 2; /* Cover background trees and wood, keep inputs & cards readable */
