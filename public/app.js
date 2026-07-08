@@ -47,11 +47,8 @@ document.addEventListener('DOMContentLoaded', () => {
   let activeRoastData = null;
   let isMuted = false;
 
-  // 1. Mouse Parallax Palm Fronds & Torchlight Tracking (v4.9.5)
+  // 1. Mouse Parallax Palm Fronds (v4.9.5)
   function updatePointer(x, y) {
-    document.documentElement.style.setProperty('--mouse-x', `${x}px`);
-    document.documentElement.style.setProperty('--mouse-y', `${y}px`);
-
     const moveX = (x - window.innerWidth / 2) / 45;
     const moveY = (y - window.innerHeight / 2) / 45;
     

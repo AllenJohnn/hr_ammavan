@@ -28,18 +28,51 @@
 
   <!-- Decorative Lived-In Wall Clutter -->
   <div class="wall-decorations">
-    <!-- SVG Wall Clock -->
-    <div class="wall-clock">
-      <svg viewBox="0 0 100 100" width="80" height="80">
-        <circle cx="50" cy="50" r="45" fill="#fcfcf6" stroke="#22130c" stroke-width="6"/>
-        <circle cx="50" cy="50" r="38" fill="none" stroke="#6d5448" stroke-width="1.5" stroke-dasharray="2 4"/>
-        <text x="50" y="20" font-family="monospace" font-size="10" font-weight="bold" text-anchor="middle" fill="#22130c">12</text>
-        <text x="80" y="53" font-family="monospace" font-size="10" font-weight="bold" text-anchor="middle" fill="#22130c">3</text>
-        <text x="50" y="87" font-family="monospace" font-size="10" font-weight="bold" text-anchor="middle" fill="#22130c">6</text>
-        <text x="21" y="53" font-family="monospace" font-size="10" font-weight="bold" text-anchor="middle" fill="#22130c">9</text>
-        <line class="clock-hand-hour" x1="50" y1="50" x2="50" y2="28" stroke="#111" stroke-width="4.5" stroke-linecap="round"/>
-        <line class="clock-hand-minute" x1="50" y1="50" x2="68" y2="50" stroke="#111" stroke-width="3" stroke-linecap="round"/>
-        <circle cx="50" cy="50" r="4" fill="#B33A2E"/>
+    <!-- Antique Kerala Pendulum Clock (Teak Wood & Brass v4.9.5) -->
+    <div class="kerala-vintage-clock">
+      <svg viewBox="0 0 100 170" width="90" height="153">
+        <!-- Main Dark Teak Wood Case -->
+        <path d="M 15 10 L 85 10 L 95 80 L 85 150 L 15 150 L 5 80 Z" fill="#3E2723" stroke="#2D1500" stroke-width="4" />
+        <!-- Inner wooden border -->
+        <path d="M 20 15 L 80 15 L 88 80 L 80 145 L 20 145 L 12 80 Z" fill="#5D4037" stroke="#3E2723" stroke-width="2" />
+        
+        <!-- Dial Section (Top) -->
+        <circle cx="50" cy="50" r="34" fill="#F5F5DC" stroke="#8D6E63" stroke-width="3" />
+        <circle cx="50" cy="50" r="30" fill="none" stroke="#A1887F" stroke-width="1" stroke-dasharray="1 3" />
+        
+        <!-- Roman Numerals -->
+        <text x="50" y="27" font-family="Georgia, serif" font-size="8" font-weight="bold" text-anchor="middle" fill="#1A0F0A">XII</text>
+        <text x="76" y="53" font-family="Georgia, serif" font-size="8" font-weight="bold" text-anchor="middle" fill="#1A0F0A">III</text>
+        <text x="50" y="78" font-family="Georgia, serif" font-size="8" font-weight="bold" text-anchor="middle" fill="#1A0F0A">VI</text>
+        <text x="24" y="53" font-family="Georgia, serif" font-size="8" font-weight="bold" text-anchor="middle" fill="#1A0F0A">IX</text>
+        
+        <!-- Clock Hands (Ornate Vintage Style) -->
+        <!-- Hour hand -->
+        <g class="clock-hand-hour-group clock-hand-hour">
+          <path d="M 50 50 L 50 32" stroke="#111" stroke-width="3" stroke-linecap="round" />
+          <circle cx="50" cy="32" r="2.5" fill="#111" />
+        </g>
+        <!-- Minute hand -->
+        <g class="clock-hand-minute-group clock-hand-minute">
+          <path d="M 50 50 L 50 24" stroke="#111" stroke-width="1.8" stroke-linecap="round" />
+          <circle cx="50" cy="24" r="1.5" fill="#111" />
+        </g>
+        
+        <!-- Center brass cap -->
+        <circle cx="50" cy="50" r="3.5" fill="#D4AF37" stroke="#8B7320" stroke-width="0.7" />
+
+        <!-- Lower Pendulum Glass Window Frame -->
+        <rect x="30" y="94" width="40" height="42" fill="#1A0F0A" stroke="#3E2723" stroke-width="3" rx="2" />
+        <rect x="33" y="97" width="34" height="36" fill="rgba(0,0,0,0.4)" />
+        
+        <!-- Swinging Brass Pendulum (CSS Animated class) -->
+        <g class="pendulum-group">
+          <!-- Pendulum Rod -->
+          <line x1="50" y1="90" x2="50" y2="120" stroke="#D4AF37" stroke-width="2.5" />
+          <!-- Pendulum Bob -->
+          <circle cx="50" cy="120" r="8" fill="#D4AF37" stroke="#8B7320" stroke-width="1" />
+          <circle cx="50" cy="120" r="4" fill="#FFE082" opacity="0.7" />
+        </g>
       </svg>
     </div>
 
@@ -540,9 +573,7 @@
     </div>
   </div>
 
-  <!-- Dynamic Incandescent Torch Overlays (v4.9.5) -->
-  <div class="torch-overlay"></div>
-  <div class="torch-glow"></div>
+
 
   <!-- Extreme Savage Score Rain Simulation Canvas (v4.9.5) -->
   <canvas id="monsoon-rain-canvas" class="hidden" style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: 15000;"></canvas>
